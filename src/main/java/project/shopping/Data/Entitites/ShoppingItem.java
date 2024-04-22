@@ -3,15 +3,14 @@ package project.shopping.Data.Entitites;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
-public class ShoppingList {
+public class ShoppingItem {
     @Id
     @GeneratedValue
     private Long id;
@@ -19,6 +18,9 @@ public class ShoppingList {
     @NotBlank
     private String name;
 
-    @OneToMany
-    private List<ShoppingItem> items;
+    @Min(1)
+    private int amount;
+
+    @ManyToOne
+    private ShoppingList list;
 }
