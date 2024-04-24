@@ -6,8 +6,10 @@
 </head>
 <body onload="get()">
 <form>
-    <label for="list-name">Name</label>
-    <input type="text" id="list-name" required>
+    <label for="item-name">Name</label>
+    <input type="text" id="item-name" required>
+    <label for="item-count">Count</label>
+    <input type="number" id="item-count">
     <button type="button" onclick="post()">Add</button>
 </form>
 <div id="json-container"></div>

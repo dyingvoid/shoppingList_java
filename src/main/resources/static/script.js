@@ -4,69 +4,38 @@ function fetchJson(json) {
 
     json.forEach(object => {
         let div = document.createElement('div');
-        div.id = 'list-id:' + object['id'];
+        let name = document.createElement('span');
+        let amount = document.createElement('span');
+        let checkBox = document.createElement('input');
+        let button = document.createElement('button');
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = async function () {
+        div.id = object.name;
+
+        name.textContent = object.name;
+        amount.textContent = object.amount;
+
+        checkBox.type = 'checkbox';
+        checkBox.checked = Boolean(object.bought);
+
+        button.type = 'button';
+        button.onclick = async function(){
             await remove(div);
-        };
-        btn.textContent = "Delete";
-
-        const name = document.createElement('p');
-        name.textContent = object['name'];
-
-        const label = document.createElement('label');
-        label.textContent = 'Item name:';
-
-        const input = document.createElement('input');
-        input.type = 'text';
-
-        const inputBtn = document.createElement('button');
-        inputBtn.type = 'button';
-        inputBtn.textContent = 'Add'
-        inputBtn.onclick = async function() {
-            await postItem(listDiv.split(':')[1], input.textContent);
         }
-
-        object['items'].forEach(item => {
-            createItem(item, div);
-        });
+        button.innerText = 'Remove';
 
         div.appendChild(name);
-        div.appendChild(btn);
-        div.appendChild(label);
-        div.appendChild(input);
-        div.appendChild(inputBtn);
+        div.appendChild(amount);
+        div.appendChild(checkBox);
+        div.appendChild(button);
 
         container.appendChild(div);
     });
 }
 
-function createItem(item, listDiv) {
-    const div = document.createElement('div');
-    div.id = 'item-id:' + item['id'];
-}
-
-async function postItem(listId, itemName) {
-    await fetch('/lists/' + listId, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({name: itemName})
-    })
-}
-
 async function remove(div) {
-    await fetch('/lists/' + div.id.split(':')[1], {
+    await fetch('/lists/' + div.id, {
         method: 'DELETE'
     })
-        .then(response => response.json())
-        .then(data => {
-            fetchJson(data)
-        });
-
     await get();
 }
 
@@ -86,7 +55,10 @@ async function post() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: document.getElementById("list-name").value})
+        body: JSON.stringify({
+            name: document.getElementById("item-name").value,
+            amount: document.getElementById('item-count').value,
+            })
     }).catch(error => console.log('Error: ', error));
     await get();
 }

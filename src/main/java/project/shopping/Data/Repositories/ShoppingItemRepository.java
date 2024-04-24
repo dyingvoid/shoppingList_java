@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import project.shopping.Data.Entitites.ShoppingItem;
 
 @Repository
-public interface ShoppingItemRepository extends JpaRepository<ShoppingItem, Long> {
+public interface ShoppingItemRepository extends JpaRepository<ShoppingItem, String> {
 }
