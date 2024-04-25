@@ -16,6 +16,9 @@ function fetchJson(json) {
 
         checkBox.type = 'checkbox';
         checkBox.checked = Boolean(object.bought);
+        checkBox.onclick = async function(){
+            await changeBought(div, checkBox);
+        };
 
         button.type = 'button';
         button.onclick = async function(){
@@ -30,6 +33,16 @@ function fetchJson(json) {
 
         container.appendChild(div);
     });
+}
+
+async function changeBought(div, checkbox){
+    await fetch('/lists/' + div.id, {
+        method: 'PUT',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(checkbox.checked)
+    }).catch(err => console.log(err));
 }
 
 async function remove(div) {
@@ -50,6 +63,8 @@ async function get() {
 }
 
 async function post() {
+    let amountVal = document.getElementById('item-count').value;
+
     await fetch("/lists", {
         method: 'POST',
         headers: {
@@ -57,7 +72,7 @@ async function post() {
         },
         body: JSON.stringify({
             name: document.getElementById("item-name").value,
-            amount: document.getElementById('item-count').value,
+            amount: amountVal === '' ? '1' : amountVal,
             })
     }).catch(error => console.log('Error: ', error));
     await get();

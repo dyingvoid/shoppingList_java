@@ -40,14 +40,18 @@ public class ListController {
     }
 
     @PutMapping("{name}")
-    public void changeBought(@PathVariable String name) {
+    public void changeBought(@PathVariable String name, @RequestBody boolean bought) {
         Optional<ShoppingItem> item = items.findById(name);
-        item.ifPresent(value -> value.setBought(!value.isBought()));
+
+        if (item.isPresent()) {
+            ShoppingItem value = item.get();
+            value.setBought(bought);
+            items.save(value);
+        }
     }
 
     @DeleteMapping("{name}")
     public void deleteItem(@PathVariable String name) {
-        Optional<ShoppingItem> item = items.findById(name);
-        item.ifPresent(items::delete);
+        items.findById(name).ifPresent(items::delete);
     }
 }
