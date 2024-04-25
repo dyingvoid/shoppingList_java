@@ -11,8 +11,8 @@ function fetchJson(json) {
 
         div.id = object.name;
 
-        name.textContent = object.name;
-        amount.textContent = object.amount;
+        name.textContent = 'Name: ' + object.name;
+        amount.textContent = ' Amount: ' + object.amount;
 
         checkBox.type = 'checkbox';
         checkBox.checked = Boolean(object.bought);
